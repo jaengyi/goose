@@ -1,0 +1,8 @@
+{
+  "label": "MCP 서버",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "MCP 서버를 goose 확장 프로그램으로 통합하고 사용하는 방법"
+  }
+}

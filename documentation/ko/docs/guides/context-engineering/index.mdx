@@ -1,0 +1,65 @@
+---
+title: 컨텍스트 엔지니어링
+hide_title: true
+description: goose가 효과적으로 작업하는 데 필요한 지식, 선호도 및 워크플로우 제공
+---
+
+import Card from '@site/src/components/Card';
+import styles from '@site/src/components/Card/styles.module.css';
+
+<h1 className={styles.pageTitle}>컨텍스트 엔지니어링</h1>
+<p className={styles.pageDescription}>
+  컨텍스트 엔지니어링은 goose가 더 효과적으로 작업하는 데 도움이 되는 배경 지식, 선호도 및 워크플로우를 구축하는 것입니다. 지침을 반복하는 대신 한 번 정의하고 goose에게 작업 방식을 가르칩니다.
+</p>
+
+<div className={styles.categorySection}>
+  <h2 className={styles.categoryTitle}>📚 문서 및 가이드</h2>
+  <div className={styles.cardGrid}>
+    <Card
+      title="goosehints 사용"
+      description="AGENTS.md, .goosehints 및 기타 파일을 사용하여 goose가 자동으로 로드하는 프로젝트 컨텍스트, 선호도 및 지침을 제공합니다."
+      link="/docs/guides/context-engineering/using-goosehints"
+    />
+    <Card
+      title="스킬 사용"
+      description="goose가 필요에 따라 로드할 수 있는 워크플로우, 스크립트 및 기타 리소스를 포함하는 재사용 가능한 지침 세트를 만듭니다."
+      link="/docs/guides/context-engineering/using-skills"
+    />
+    <Card
+      title="사용자 정의 슬래시 명령"
+      description="간단한 슬래시 명령으로 모든 채팅 세션에서 빠르게 재사용 가능한 지침을 실행하는 사용자 정의 단축키를 만듭니다."
+      link="/docs/guides/context-engineering/slash-commands"
+    />
+    <Card
+      title="메모리 확장 기능"
+      description="goose에게 세션 간에 기억할 수 있는 영구 지식을 가르칩니다. 일관된 지원을 위해 명령, 코드 스니펫 및 선호도를 저장합니다."
+      link="/docs/mcp/memory-mcp"
+    />
+    <Card
+      title="연구 → 계획 → 구현 패턴"
+      description="슬래시 명령이 대화형 RPI 워크플로우에 지침을 쉽게 통합하는 방법을 확인하세요."
+      link="/docs/tutorials/rpi"
+    />
+  </div>
+</div>
+
+<div className={styles.categorySection}>
+  <h2 className={styles.categoryTitle}>📝 주요 블로그 게시물</h2>
+  <div className={styles.cardGrid}>
+    <Card
+      title="내 .goosehints 파일에는 무엇이 있나요"
+      description=".goosehints 대 메모리 확장 기능에 대한 심층 분석 및 더 나은 성능을 위해 goose 구성을 최적화하는 방법."
+      link="/blog/2025/06/05/whats-in-my-goosehints-file"
+    />
+    <Card
+      title="AI 에이전트가 원치 않는 변경을 하지 못하게 하는 방법"
+      description="변경 사항을 제어하고 안전하게 롤백할 수 있도록 AI 에이전트에게 자주 커밋하는 방법을 가르칩니다."
+      link="/blog/2025/12/10/stop-ai-agent-unwanted-changes"
+    />
+    <Card
+      title="AI 회의론자를 위한 컨텍스트 윈도우 가이드"
+      description="AI 에이전트가 왜 잊어버릴까요? 컨텍스트 윈도우, 토큰 및 goose가 메모리와 긴 대화를 관리하는 방법을 알아보세요."
+      link="/blog/2025/08/18/understanding-context-windows"
+    />
+  </div>
+</div>

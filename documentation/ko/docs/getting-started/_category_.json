@@ -1,0 +1,8 @@
+{
+  "label": "시작하기",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "goose를 빠르게 시작하세요"
+  }
+}

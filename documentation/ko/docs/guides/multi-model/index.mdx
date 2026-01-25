@@ -1,0 +1,77 @@
+---
+title: 멀티 모델 구성
+hide_title: true
+description: 비용, 성능 및 결과를 최적화하기 위한 모델 전환 동작 구성 접근법.
+---
+
+import Card from '@site/src/components/Card';
+import styles from '@site/src/components/Card/styles.module.css';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import VideoCarousel from '@site/src/components/VideoCarousel';
+
+<h1 className={styles.pageTitle}>멀티 모델 구성</h1>
+<p className={styles.pageDescription}>
+  goose는 단일 세션 내에서 다양한 모델을 사용하기 위한 여러 접근 방식을 지원하여 비용, 성능 및 작업 전문화를 최적화할 수 있습니다. 전략은 수동 또는 턴 기반 모델 선택부터 동적이고 컨텍스트 인식 전환까지 다양합니다.
+</p>
+
+<div className={styles.categorySection}>
+  <h2 className={styles.categoryTitle}>📚 문서 및 가이드</h2>
+  <div className={styles.cardGrid}>
+    <Card
+      title="리드/워커 멀티 모델 설정"
+      description="초기 턴에는 리드 모델을 사용하고 실행에는 워커 모델을 사용하는 모델 간 자동 전환."
+      link="/docs/tutorials/lead-worker"
+    />
+    <Card
+      title="작업 전 계획 만들기"
+      description="복잡한 프로젝트를 상세하고 실행 가능한 단계로 분해하기 위해 선택적으로 전용 모델을 사용하는 수동 계획 모드."
+      link="/docs/guides/creating-plans"
+    />
+    <Card
+      title="복잡한 작업 계획"
+      description="Plan 기능을 사용하여 복잡한 devcontainer 설정을 체계적이고 실행 가능한 로드맵으로 변환합니다."
+      link="/docs/tutorials/plan-feature-devcontainer-setup"
+    />
+  </div>
+</div>
+
+<div className={styles.categorySection}>
+  <h2 className={styles.categoryTitle}>📝 주요 블로그 게시물</h2>
+  <div className={styles.cardGrid}>
+    <Card
+      title="LLM을 도구 상자의 도구처럼 다루기: 더 스마트한 AI 에이전트를 위한 멀티 모델 접근 방식"
+      description="LLM은 전문화된 도구이며, 멀티 모델 접근 방식은 더 스마트하고 효율적인 AI 에이전트를 만듭니다."
+      link="/blog/2025/06/16/multi-model-in-goose"
+    />
+    <Card
+      title="LLM 태그 팀: 누가 계획하고, 누가 실행하나요?"
+      description="리드/워커 모델 구성이 어떻게 효과적인 AI 태그 팀을 만드는지 알아보세요. 한 모델은 계획을, 다른 모델은 실행을 담당합니다."
+      link="/blog/2025/08/11/llm-tag-team-lead-worker-model"
+    />
+  </div>
+</div>
+
+<div className={styles.categorySection}>
+  <h2 className={styles.categoryTitle}>🎥 더 많은 비디오</h2>
+
+<VideoCarousel
+  id="more-videos"
+  videos={[
+    {
+      type: 'iframe',
+      src: 'https://www.youtube.com/embed/ZyhUTsChFUw',
+      title: 'goose의 멀티 모델 설정',
+      description: '구성부터 모범 사례까지 리드/워커 모드에 대해 알아보기',
+      duration: '5:01'
+    },
+    {
+      type: 'iframe',
+      src: 'https://www.youtube.com/embed/SJ6EZpyCKrk',
+      title: '라이브스트림 - LLM 태그 팀: 누가 계획하고, 누가 실행하나요?',
+      description: '리드/워커 모드를 사용하여 실시간으로 goose 문서에 기능 추가',
+      duration: '9:36'
+    }
+  ]}
+/>
+</div>

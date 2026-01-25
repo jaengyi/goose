@@ -1,0 +1,159 @@
+---
+title: Netlify 확장 프로그램
+description: Netlify MCP 서버를 goose 확장 프로그램으로 추가하기
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import YouTubeShortEmbed from '@site/src/components/YouTubeShortEmbed';
+import GooseDesktopInstaller from '@site/src/components/GooseDesktopInstaller';
+import CLIExtensionInstructions from '@site/src/components/CLIExtensionInstructions';
+
+<YouTubeShortEmbed videoUrl="https://www.youtube.com/embed/iSUNmxOf6gw" />
+
+이 튜토리얼에서는 Netlify 사이트를 빌드, 배포, 관리하기 위해 [Netlify MCP 서버](https://github.com/netlify/netlify-mcp)를 goose 확장 프로그램으로 추가하는 방법을 다룹니다.
+
+:::tip 요약
+<Tabs groupId="interface">
+  <TabItem value="ui" label="goose Desktop" default>
+  [설치 프로그램 실행](goose://extension?cmd=npx&arg=-y&arg=%40netlify%2Fmcp&id=netlify&name=Netlify&description=Build%2C%20deploy%2C%20and%20manage%20sites%20with%20Netlify%27s%20official%20MCP%20server.)
+  </TabItem>
+  <TabItem value="cli" label="goose CLI">
+  **Command**
+  ```sh
+  npx -y @netlify/mcp
+  ```
+  </TabItem>
+</Tabs>
+:::
+
+## 구성
+
+Netlify 계정에 로그인되어 있는지 확인하세요:
+
+```bash
+netlify login
+```
+
+### Netlify MCP 서버 추가
+
+:::info
+이 명령은 `npx`를 사용하므로 시스템에 [Node.js](https://nodejs.org/)가 설치되어 있어야 합니다.
+:::
+
+<Tabs groupId="interface">
+  <TabItem value="ui" label="goose Desktop" default>
+  <GooseDesktopInstaller
+    extensionId="netlify"
+    extensionName="Netlify"
+    description="Netlify의 공식 MCP 서버로 사이트 빌드, 배포 및 관리"
+    command="npx"
+    args={["-y", "@netlify/mcp"]}
+  />
+  </TabItem>
+  <TabItem value="cli" label="goose CLI">
+    <CLIExtensionInstructions
+      name="Netlify"
+      description="Netlify의 공식 MCP 서버로 사이트 빌드, 배포 및 관리"
+      command="npx -y @netlify/mcp"
+    />
+  </TabItem>
+</Tabs>
+
+## 사용 예제
+
+이 예제에서는 goose와 Netlify 확장 프로그램을 사용하여 웹 애플리케이션을 배포하는 방법을 보여드리겠습니다.
+
+### goose 프롬프트
+
+> Can you deploy my app to Netlify via my GitHub repo?
+
+### goose 출력
+
+:::note CLI
+
+<details>
+    <summary>Tool Calls</summary>
+    I'll help you deploy your tic-tac-toe app to Netlify from your GitHub repository. Let me first check your Netlify account and then set up the deployment.
+
+    ─── netlify-user-services | netlify ──────────────────────────
+
+    selectSchema: <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;operation: get-user <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;params:
+
+    Great! I can see you're logged into Netlify with your GitHub account connected. Now let me create a new Netlify site and deploy your tic-tac-toe app from your GitHub repository.
+
+    ─── netlify-project-services | netlify ──────────────────────────
+
+    selectSchema:<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;operation: create-new-project<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;params:<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name: tic-tac-toe-game
+
+    Let me try a different name for the project:
+
+    ─── netlify-project-services | netlify ──────────────────────────
+
+    selectSchema:<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;operation: create-new-project<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;params:<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name: janedoe-tic-tac-toe
+
+    Perfect! I've created a new Netlify site called "janedoe-tic-tac-toe". Now I need to deploy your code from the GitHub repository. Let me deploy the site:
+
+    ─── netlify-deploy-services | netlify ──────────────────────────
+
+    selectSchema:<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;operation: deploy-site<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;params:<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deployDirectory: /Users/janedoe/Development/tic-tac-toe<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;siteId: 1731e49e-1d0a-49a3-ad95-975b550f324a
+
+    Let me check the deployment status and get the live URL for your site:
+
+    ─── netlify-project-services | netlify ──────────────────────────
+
+    selectSchema:<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;operation: get-project<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;params:<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;siteId: 1731e49e-1d0a-49a3-ad95-975b550f324a
+</details>
+
+🎉 **Success! Your tic-tac-toe game has been deployed to Netlify!**
+
+## Deployment Details:
+
+- **Live Site URL**: http://janedoe-tic-tac-toe.netlify.app
+- **Netlify Project Dashboard**: https://app.netlify.com/projects/janedoe-tic-tac-toe
+- **Site ID**: 1731e49e-1d0a-49a3-ad95-975b550f324a
+
+## What was deployed:
+
+✅ **HTML**: Your main game interface
+
+✅ **CSS**: Modern styling with animations and responsive design
+
+✅ **JavaScript**: Complete game logic and interactivity
+
+✅ **README**: Project documentation
+
+## Next Steps:
+
+1. **Visit your live site**: http://janedoe-tic-tac-toe.netlify.app
+2. **Test the game**: Make sure everything works as expected
+3. **Share with others**: Your game is now live on the web!
+
+## Future Updates:
+
+Since your code is deployed from your local directory, if you want to make changes:
+
+1. Update your local files
+2. Push changes to your GitHub repository
+3. You can either:
+   - Redeploy manually using the same command
+   - Set up continuous deployment from GitHub (which would auto-deploy when you push changes)
+
+Would you like me to help you set up continuous deployment from your GitHub repository so that future changes are automatically deployed?
+
+Your tic-tac-toe game is now live and ready to play! 🎮

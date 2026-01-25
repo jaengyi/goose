@@ -1,0 +1,45 @@
+---
+title: goose와 안전하게 작업하기
+hide_title: true
+description: 내장된 보안 기능과 모범 사례로 goose 워크플로우를 안전하게 유지하세요
+---
+
+import Card from '@site/src/components/Card';
+import styles from '@site/src/components/Card/styles.module.css';
+
+<h1 className={styles.pageTitle}>goose와 안전하게 작업하기</h1>
+<p className={styles.pageDescription}>
+  보안 위험을 이해하고 모범 사례를 따르면 goose를 사용한 워크플로우를 보호하는 데 도움이 됩니다.
+</p>
+
+<div className={styles.categorySection}>
+  <h2 className={styles.categoryTitle}>📚 문서 및 가이드</h2>
+  <div className={styles.cardGrid}>
+    <Card
+      title="프롬프트 인젝션 감지"
+      description="잠재적으로 유해한 명령이 실행되기 전에 감지하고 방지합니다."
+      link="/docs/guides/security/prompt-injection-detection"
+    />
+    <Card
+      title="분류 API 사양"
+      description="ML 기반 프롬프트 인젝션 감지 엔드포인트를 자체 호스팅하기 위한 API 사양."
+      link="/docs/guides/security/classification-api-spec"
+    />
+  </div>
+</div>
+
+<div className={styles.categorySection}>
+  <h2 className={styles.categoryTitle}>📝 주요 블로그 게시물</h2>
+  <div className={styles.cardGrid}>
+    <Card
+      title="MCP 서버가 안전한지 확인하는 방법"
+      description="에이전트를 아무 MCP 서버에나 연결하기 전에 실제로 안전한지 확인하는 방법입니다."
+      link="/blog/2025/03/26/mcp-security"
+    />
+    <Card
+      title="Model Context Protocol 보안"
+      description="Block에서 Model Context Protocol(MCP)을 사용한 안전하고 유능한 AI 통합 구축."
+      link="/blog/2025/03/31/securing-mcp"
+    />
+  </div>
+</div>

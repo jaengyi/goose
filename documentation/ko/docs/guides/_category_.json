@@ -1,0 +1,8 @@
+{
+  "label": "가이드",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "goose 사용을 위한 필수 팁과 권장 사항을 알아보세요"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "label": "튜토리얼",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "다양한 방법으로 goose 사용하기"
+  }
+}

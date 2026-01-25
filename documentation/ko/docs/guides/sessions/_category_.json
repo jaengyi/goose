@@ -1,0 +1,8 @@
+{
+  "label": "세션 관리",
+  "position": 1,
+  "link": {
+    "type": "doc",
+    "id": "guides/sessions/index"
+  }
+}

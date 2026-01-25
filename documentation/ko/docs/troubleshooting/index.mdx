@@ -1,0 +1,50 @@
+---
+title: 문제 해결
+hide_title: true
+description: goose 관련 도움말, 문제 보고 및 일반적인 문제 해결하기
+---
+
+import Card from '@site/src/components/Card';
+import styles from '@site/src/components/Card/styles.module.css';
+
+<h1 className={styles.pageTitle}>문제 해결</h1>
+<p className={styles.pageDescription}>
+  필요할 때 도움을 받고, 버그를 보고하고, 기능을 요청하고, 일반적인 문제에 대한 해결책을 찾으세요. goose는 내장 진단 및 지원 채널에 대한 직접 링크를 제공합니다.
+</p>
+
+<div className={styles.categorySection}>
+  <h2 className={styles.categoryTitle}>🛠️ 도움받기</h2>
+  <div className={styles.cardGrid}>
+    <Card
+      title="진단 및 보고"
+      description="내장 진단을 사용하고, 버그를 보고하고, 새로운 기능을 요청하세요. 문제 해결 데이터 생성을 위한 단계별 가이드가 포함되어 있습니다."
+      link="/docs/troubleshooting/diagnostics-and-reporting"
+    />
+    <Card
+      title="알려진 문제"
+      description="일반적인 문제, 오류 메시지 및 플랫폼별 문제를 다루는 포괄적인 문제 해결 가이드와 단계별 솔루션."
+      link="/docs/troubleshooting/known-issues"
+    />
+    <Card
+      title="로그"
+      description="디버깅 및 문제 해결을 위해 goose 세션 로그와 시스템 로그에 액세스하고 해석하는 방법을 알아보세요."
+      link="/docs/guides/logs"
+    />
+  </div>
+</div>
+
+<div className={styles.categorySection}>
+  <h2 className={styles.categoryTitle}>💬 커뮤니티 지원</h2>
+  <div className={styles.cardGrid}>
+    <Card
+      title="Discord 커뮤니티"
+      description="goose 사용자 및 유지관리자로부터 실시간 도움, 토론 및 커뮤니티 지원을 받기 위해 활발한 Discord 서버에 가입하세요."
+      link="https://discord.gg/goose-oss"
+    />
+    <Card
+      title="GitHub Issues"
+      description="기존 이슈를 탐색하고, 토론에 기여하거나, GitHub 저장소에서 새로운 버그 보고서 및 기능 요청을 작성하세요."
+      link="https://github.com/block/goose/issues"
+    />
+  </div>
+</div>

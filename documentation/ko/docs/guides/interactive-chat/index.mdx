@@ -1,0 +1,106 @@
+---
+title: MCP 앱 및 MCP-UI로 풍부한 인터랙티브 채팅
+hide_title: true
+description: MCP 앱 및 MCP-UI를 사용하여 goose 데스크톱 내에서 렌더링되는 인터랙티브 UI 애플리케이션 구축
+---
+
+import Card from '@site/src/components/Card';
+import styles from '@site/src/components/Card/styles.module.css';
+import VideoCarousel from '@site/src/components/VideoCarousel';
+
+<h1 className={styles.pageTitle}>MCP 앱 및 MCP-UI로 풍부한 인터랙티브 채팅</h1>
+<p className={styles.pageDescription}>
+  goose 데스크톱은 텍스트 전용 응답을 그래픽적이고 인터랙티브한 경험으로 변환하는 확장 기능을 지원합니다. 목록과 설명을 읽는 대신 대화 내에서 직접 UI 구성 요소를 클릭하고 탐색하며 상호 작용할 수 있습니다.
+</p>
+
+ <div className="video-container margin-bottom--lg">
+  <iframe
+    className="aspect-ratio"
+    src="https://www.youtube.com/embed/QJHGvsVXhjw"
+    title="모든 AI 채팅을 인터랙티브 경험으로 | MCP-UI"
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen
+  ></iframe>
+</div>
+
+<div className={styles.categorySection}>
+  <h2 className={styles.categoryTitle}>📚 문서 및 가이드</h2>
+  <div className={styles.cardGrid}>
+    <Card
+      title="MCP 앱 구축"
+      description="goose 데스크톱 내에서 렌더링되는 인터랙티브 UI 애플리케이션을 만드는 단계별 튜토리얼."
+      link="/docs/tutorials/building-mcp-apps"
+    />
+    <Card
+      title="MCP-UI 확장 기능"
+      description="goose가 텍스트 기반 응답을 매력적인 그래픽 및 인터랙티브 사용자 경험으로 변환합니다."
+      link="/docs/guides/interactive-chat/mcp-ui"
+    />
+    <Card
+      title="Auto Visualiser 확장 기능"
+      description="goose에서 자동으로 인터랙티브 데이터 시각화를 생성합니다."
+      link="/docs/mcp/autovisualiser-mcp"
+    />
+  </div>
+</div>
+
+<div className={styles.categorySection}>
+  <h2 className={styles.categoryTitle}>📝 주요 블로그 게시물</h2>
+  <div className={styles.cardGrid}>
+    <Card
+      title="goose에 MCP 앱 도입"
+      description="goose가 인터랙티브 UI를 위한 새로운 표준에 맞추어 MCP 앱 사양 초안에 대한 초기 지원을 제공합니다."
+      link="/blog/2026/01/06/mcp-apps"
+    />
+    <Card
+      title="MCP UI: 에이전트에 브라우저 가져오기"
+      description="MCP-UI 서버는 goose 데스크톱이 풍부하고 삽입 가능한 UI로 렌더링하는 콘텐츠를 반환합니다."
+      link="/blog/2025/08/11/mcp-ui-post-browser-world"
+    />
+    <Card
+      title="MCP-UI: 에이전트 인터페이스의 미래"
+      description="AI 에이전트는 텍스트 벽을 넘어 풍부하고 인터랙티브한 UX로 이동해야 합니다."
+      link="/blog/2025/08/25/mcp-ui-future-agentic-interfaces"
+    />
+    <Card
+      title="MCP-UI를 사용한 Auto Visualiser"
+      description="MCP-UI로 구동되어 데이터와 상호 작용할 때 자동으로 데이터의 시각적 표현을 렌더링합니다"
+      link="/blog/2025/08/27/autovisualiser-with-mcp-ui"
+    />
+    <Card
+      title="MCP 서버를 MCP-UI 호환으로 만드는 방법"
+      description="MCP 서버를 MCP-UI 호환으로 만드는 데는 몇 줄의 코드만 필요합니다"
+      link="/blog/2025/09/08/turn-any-mcp-server-mcp-ui-compatible"
+    />
+    <Card
+      title="LLM이 아닌 사용자를 위한 AI 설계"
+      description="MCP-UI로 의도 기반 AI 경험 구축."
+      link="/blog/2025/10/14/designing-ai-for-humans"
+    />
+  </div>
+</div>
+
+<div className={styles.categorySection}>
+  <h2 className={styles.categoryTitle}>🎥 더 많은 비디오</h2>
+
+<VideoCarousel
+  id="more-videos"
+  videos={[
+    {
+      type: 'iframe',
+      src: 'https://youtube.com/embed/Kxj-vFBO_9U',
+      title: 'MCP-UI 서버 구축',
+      description: '처음부터 자신만의 MCP-UI 서버를 구축하는 방법 알아보기',
+      duration: '40:07'
+    },
+    {
+      type: 'iframe',
+      src: 'https://youtube.com/embed/GS-kmreZDgU',
+      title: '라이브스트림 - MCP-UI: 에이전트 인터페이스의 미래',
+      description: 'goose 팀이 MCP-UI 제작자와 함께 시각적 인터페이스의 미래에 대해 이야기합니다',
+      duration: '55:32'
+    }
+  ]}
+/>
+</div>
