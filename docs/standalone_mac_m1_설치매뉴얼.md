@@ -1,14 +1,14 @@
-# 폐쇄망 macOS (Apple Silicon M1/M2/M3/M4) 환경에서 goose 설치 매뉴얼
+# macOS (Apple Silicon M1/M2/M3/M4) 환경에서 goose 설치 매뉴얼
 
-이 문서는 인터넷이 연결되지 않는 폐쇄망(Air-gapped) macOS Apple Silicon 환경에서 goose를 설치하고 사용하는 방법을 단계별로 설명합니다.
+이 문서는 인터넷이 연결된 macOS Apple Silicon 환경에서 goose를 설치하고 로컬 LLM과 함께 사용하는 방법을 단계별로 설명합니다.
 
 ## 목차
 
 1. [사전 준비 사항](#1-사전-준비-사항)
-2. [인터넷 환경에서 파일 다운로드](#2-인터넷-환경에서-파일-다운로드)
-3. [폐쇄망 환경으로 파일 이동](#3-폐쇄망-환경으로-파일-이동)
-4. [Ollama 설치 및 모델 설정](#4-ollama-설치-및-모델-설정)
-5. [goose 설치 및 설정](#5-goose-설치-및-설정)
+2. [Ollama 설치](#2-ollama-설치)
+3. [LLM 모델 다운로드](#3-llm-모델-다운로드)
+4. [goose 설치](#4-goose-설치)
+5. [goose 설정](#5-goose-설정)
 6. [Tool Shim 설정](#6-tool-shim-설정)
 7. [동작 확인](#7-동작-확인)
 8. [소스 코드 분석 활용 예시](#8-소스-코드-분석-활용-예시)
@@ -29,211 +29,113 @@
 
 > **Apple Silicon 참고**: M1/M2/M3/M4 칩은 GPU와 CPU가 통합 메모리를 공유합니다. Ollama는 Apple Silicon의 Metal GPU 가속을 자동으로 활용하므로 별도의 GPU 설정이 필요 없습니다.
 
-### 준비물
+---
 
-- USB 드라이브 또는 외장 하드 (최소 32GB)
-- 인터넷이 연결된 별도 Mac 또는 PC (다운로드용)
+## 2. Ollama 설치
+
+Ollama는 로컬에서 LLM을 실행할 수 있는 가장 간단한 방법입니다.
+
+### 방법 1: 공식 사이트에서 다운로드 (권장)
+
+1. https://ollama.com/download/mac 에서 `Ollama-darwin.zip`을 다운로드합니다.
+2. 압축을 풀고 `Ollama.app`을 `/Applications` 폴더로 이동합니다.
+3. Launchpad 또는 Spotlight(Cmd+Space)에서 **Ollama**를 실행합니다.
+
+### 방법 2: Homebrew로 설치
+
+```bash
+brew install ollama
+```
+
+### 설치 확인
+
+Ollama를 실행하면 메뉴 바에 아이콘이 나타납니다. 터미널에서 확인:
+
+```bash
+ollama --version
+```
 
 ---
 
-## 2. 인터넷 환경에서 파일 다운로드
+## 3. LLM 모델 다운로드
 
-인터넷이 연결된 Mac에서 아래 파일들을 미리 다운로드합니다.
-
-### 2-1. goose 바이너리 다운로드
-
-GitHub Releases 페이지에서 macOS Apple Silicon용 바이너리를 다운로드합니다:
-
-```
-https://github.com/block/goose/releases
-```
-
-- `goose-aarch64-apple-darwin.zip` (Apple Silicon / ARM64) 파일을 다운로드합니다.
-
-> **주의**: Intel Mac용인 `goose-x86_64-apple-darwin.zip`이 아닌, **aarch64** (ARM64) 빌드를 선택해야 합니다.
-
-### 2-2. Ollama 설치 파일 다운로드
-
-```
-https://ollama.com/download/mac
-```
-
-- `Ollama-darwin.zip` 파일을 다운로드합니다. Apple Silicon을 자동으로 지원합니다.
-
-### 2-3. LLM 모델 다운로드
-
-인터넷 연결 Mac에 Ollama를 먼저 설치한 뒤, 터미널에서 필요한 모델을 다운로드합니다:
+터미널에서 코드 분석에 적합한 모델을 다운로드합니다:
 
 ```bash
-# 코드 분석에 적합한 모델 (용도에 맞게 선택)
-ollama pull qwen3                    # 기본 모델 (약 4.7GB)
-ollama pull qwen2.5-coder:7b        # 코드 특화 모델 (약 4.7GB) - 권장
+# 코드 특화 모델 - 권장
+ollama pull qwen2.5-coder:7b        # 코드 특화 모델 (약 4.7GB)
+
+# 기타 선택지 (용도에 맞게 추가 다운로드)
+ollama pull qwen3                    # 범용 모델 (약 4.7GB)
 ollama pull codellama:13b            # 코드 특화 모델 (약 7.4GB)
 ollama pull deepseek-coder:6.7b     # 코드 분석 특화 (약 3.8GB)
 
-# Tool Shim용 모델 (도구 호출 지원이 약한 모델 사용 시 필요)
+# Tool Shim용 모델 (도구 호출 보조, 6단계 참고)
 ollama pull llama3.2
 
 # 대형 모델 (32GB+ 통합 메모리 환경에서만)
 ollama pull qwen2.5-coder:32b       # 고성능 코드 모델 (약 19GB)
 ```
 
-### 2-4. 모델 파일 위치 확인
-
-다운로드된 모델은 다음 경로에 저장됩니다:
-
-```
-~/.ollama/models/
-```
-
-이 폴더 전체를 USB 드라이브에 복사합니다:
-
-```bash
-# USB 드라이브에 모델 복사 (/Volumes/USB는 실제 USB 마운트 경로로 변경)
-cp -r ~/.ollama/models /Volumes/USB/.ollama_models
-```
-
-### 2-5. 다운로드 파일 체크리스트
-
-USB 드라이브에 다음 파일들이 모두 있는지 확인합니다:
-
-```
-USB 드라이브/
-├── Ollama-darwin.zip            # Ollama 설치 파일
-├── goose-aarch64-apple-darwin.zip  # goose 바이너리 (ARM64)
-└── .ollama_models/              # 다운로드한 모델 파일 전체
-    ├── blobs/
-    └── manifests/
-```
-
----
-
-## 3. 폐쇄망 환경으로 파일 이동
-
-USB 드라이브를 폐쇄망 Mac에 연결하고, 파일을 복사합니다.
-
-### 3-1. USB 드라이브 마운트 확인
-
-```bash
-# USB 드라이브 마운트 경로 확인
-ls /Volumes/
-```
-
-### 3-2. 작업 폴더 생성
-
-```bash
-mkdir -p ~/goose-install
-```
-
-### 3-3. 파일 복사
-
-```bash
-# USB 드라이브 경로 (실제 이름으로 변경)
-USB="/Volumes/USB"
-
-# goose 바이너리 복사
-cp "$USB/goose-aarch64-apple-darwin.zip" ~/goose-install/
-
-# Ollama 설치 파일 복사
-cp "$USB/Ollama-darwin.zip" ~/goose-install/
-
-# 모델 파일 복사 (용량이 크므로 시간이 걸릴 수 있음)
-mkdir -p ~/.ollama
-cp -r "$USB/.ollama_models" ~/.ollama/models
-```
-
----
-
-## 4. Ollama 설치 및 모델 설정
-
-### 4-1. Ollama 설치
-
-```bash
-# 압축 해제
-cd ~/goose-install
-unzip Ollama-darwin.zip
-
-# Applications 폴더로 이동
-mv Ollama.app /Applications/
-```
-
-또는 Finder에서 `Ollama-darwin.zip`을 더블 클릭하여 압축을 풀고, `Ollama.app`을 `/Applications` 폴더로 드래그합니다.
-
-### 4-2. Ollama 최초 실행
-
-1. Launchpad 또는 Spotlight(Cmd+Space)에서 **Ollama**를 검색하여 실행합니다.
-2. 최초 실행 시 "개발자를 확인할 수 없습니다" 경고가 나올 수 있습니다:
-   - **시스템 설정** > **개인 정보 보호 및 보안** > 하단의 "확인 없이 열기" 클릭
-   - 또는 터미널에서 실행:
-     ```bash
-     xattr -d com.apple.quarantine /Applications/Ollama.app
-     ```
-3. 메뉴 바에 Ollama 아이콘(🦙)이 나타나면 정상 실행된 것입니다.
-
-### 4-3. 모델 파일 확인
-
-터미널에서 모델이 정상적으로 인식되는지 확인합니다:
+다운로드 완료 후 확인:
 
 ```bash
 ollama list
 ```
 
-정상 출력 예시:
-
-```
-NAME                    ID              SIZE      MODIFIED
-qwen2.5-coder:7b       a1b2c3d4e5f6    4.7 GB    2 hours ago
-llama3.2                f6e5d4c3b2a1    2.0 GB    2 hours ago
-```
-
-### 4-4. Ollama 서비스 확인
-
-```bash
-# API 응답 확인
-curl http://localhost:11434/api/tags
-```
-
-> Ollama가 실행되지 않는 경우, 터미널에서 `ollama serve`를 실행하거나 Launchpad에서 Ollama 앱을 다시 실행합니다.
-
 ---
 
-## 5. goose 설치 및 설정
+## 4. goose 설치
 
-### 5-1. goose 바이너리 설치
+### 방법 1: 설치 스크립트 (권장)
 
 ```bash
-# 압축 해제
-cd ~/goose-install
-unzip goose-aarch64-apple-darwin.zip
-
-# 실행 권한 부여
-chmod +x goose
-
-# 시스템 경로로 이동
-sudo mv goose /usr/local/bin/
+curl -fsSL https://github.com/block/goose/releases/latest/download/download_cli.sh | sh
 ```
 
-### 5-2. macOS Gatekeeper 허용
+### 방법 2: GitHub Releases에서 직접 다운로드
 
-goose 바이너리가 서명되지 않은 경우 실행이 차단될 수 있습니다:
+1. https://github.com/block/goose/releases 에서 `goose-aarch64-apple-darwin.zip` 파일을 다운로드합니다.
+
+   > **주의**: Intel Mac용인 `x86_64`가 아닌, **aarch64** (ARM64) 빌드를 선택해야 합니다.
+
+2. 압축 해제 및 설치:
+
+   ```bash
+   unzip goose-aarch64-apple-darwin.zip
+   chmod +x goose
+   sudo mv goose /usr/local/bin/
+   ```
+
+### 방법 3: Homebrew로 설치
 
 ```bash
-# Gatekeeper 격리 속성 제거
+brew install block/tap/goose
+```
+
+### macOS Gatekeeper 허용
+
+바이너리 직접 다운로드 시 실행이 차단될 수 있습니다:
+
+```bash
 sudo xattr -d com.apple.quarantine /usr/local/bin/goose
 ```
 
-### 5-3. 설치 확인
+### 설치 확인
 
 ```bash
 goose --version
 ```
 
-### 5-4. 환경 변수 설정
+---
+
+## 5. goose 설정
+
+### 5-1. 환경 변수 설정
 
 macOS의 기본 셸은 zsh입니다. `~/.zshrc` 파일에 환경 변수를 추가합니다:
 
 ```bash
-# ~/.zshrc에 추가 (nano, vim 등 사용 가능한 에디터로 편집)
 cat >> ~/.zshrc << 'EOF'
 
 # === goose 설정 ===
@@ -241,23 +143,16 @@ export GOOSE_PROVIDER="ollama"
 export GOOSE_MODEL="qwen2.5-coder:7b"
 export OLLAMA_HOST="localhost:11434"
 export OLLAMA_TIMEOUT=600
-export GOOSE_DISABLE_KEYRING=1
 EOF
 
-# 설정 즉시 적용
 source ~/.zshrc
 ```
 
-### 5-5. goose 설정 파일 생성
+### 5-2. goose 설정 파일 생성
 
 ```bash
-# 설정 디렉토리 생성
 mkdir -p ~/.config/goose
-```
 
-`~/.config/goose/config.yaml` 파일을 생성합니다:
-
-```bash
 cat > ~/.config/goose/config.yaml << 'EOF'
 GOOSE_PROVIDER: "ollama"
 GOOSE_MODEL: "qwen2.5-coder:7b"
@@ -280,7 +175,7 @@ extensions:
 EOF
 ```
 
-### 5-6. 대화형 설정 (선택)
+### 5-3. 대화형 설정 (선택)
 
 터미널에서 대화형으로 설정할 수도 있습니다:
 
@@ -301,6 +196,9 @@ goose configure
 일부 로컬 모델은 도구 호출(tool calling) 기능이 약할 수 있습니다. 이 경우 Tool Shim을 활성화하여 별도의 경량 모델이 도구 호출을 해석하도록 합니다.
 
 ```bash
+# llama3.2 모델이 없으면 다운로드
+ollama pull llama3.2
+
 # ~/.zshrc에 추가
 cat >> ~/.zshrc << 'EOF'
 
@@ -309,11 +207,8 @@ export GOOSE_TOOLSHIM=1
 export GOOSE_TOOLSHIM_OLLAMA_MODEL=llama3.2
 EOF
 
-# 설정 즉시 적용
 source ~/.zshrc
 ```
-
-> **참고**: Tool Shim을 사용하려면 2단계에서 `llama3.2` 모델도 함께 다운로드해야 합니다.
 
 ---
 
@@ -322,7 +217,7 @@ source ~/.zshrc
 ### 7-1. Ollama 동작 확인
 
 ```bash
-# Ollama 서비스 상태 확인
+# 모델 목록 확인
 ollama list
 
 # 모델 테스트
@@ -428,15 +323,8 @@ lsof -i :11434
 # 1. 사용 가능한 모델 목록 확인
 ollama list
 
-# 2. 모델 파일 경로 확인
-ls -la ~/.ollama/models/
-
-# 3. 모델 디렉토리 구조 확인
-ls -la ~/.ollama/models/manifests/
-ls -la ~/.ollama/models/blobs/
-
-# 4. 모델 파일 권한 확인 (USB에서 복사 시 권한 문제 가능)
-chmod -R 755 ~/.ollama/models/
+# 2. 모델 다시 다운로드
+ollama pull qwen2.5-coder:7b
 ```
 
 ### 메모리 부족
@@ -446,7 +334,7 @@ chmod -R 755 ~/.ollama/models/
 **해결 방법**:
 
 ```bash
-# 1. 현재 메모리 사용량 확인 (활성 메모리 확인)
+# 1. 현재 메모리 사용량 확인
 vm_stat | head -10
 
 # 2. 더 작은 모델로 변경
@@ -512,14 +400,12 @@ source ~/.zshrc
 ```bash
 # 1. goose 바이너리 위치 확인
 which goose
-ls -la /usr/local/bin/goose
 
-# 2. 바이너리가 없으면 다시 복사
-sudo cp ~/goose-install/goose /usr/local/bin/
-sudo chmod +x /usr/local/bin/goose
-
-# 3. PATH에 /usr/local/bin이 포함되어 있는지 확인
+# 2. PATH에 /usr/local/bin이 포함되어 있는지 확인
 echo $PATH | tr ':' '\n' | grep local
+
+# 3. Homebrew로 설치한 경우 PATH 확인
+eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
 
 ---
@@ -540,50 +426,35 @@ echo $PATH | tr ':' '\n' | grep local
 
 ## 부록: 전체 설치 요약 (Quick Start)
 
-아래는 전체 설치 과정을 요약한 것입니다:
-
 ```bash
-# === 인터넷 Mac에서 수행 ===
-# 1. Ollama-darwin.zip 다운로드 (https://ollama.com/download/mac)
-# 2. goose 바이너리 다운로드 (https://github.com/block/goose/releases)
-#    -> goose-aarch64-apple-darwin.zip 선택
-# 3. Ollama 설치 후 모델 다운로드
+# 1. Ollama 설치 (둘 중 하나 선택)
+brew install ollama                  # Homebrew
+# 또는 https://ollama.com/download/mac 에서 다운로드
+
+# 2. Ollama 실행 (Homebrew 설치 시)
+ollama serve &
+
+# 3. 모델 다운로드
 ollama pull qwen2.5-coder:7b
 ollama pull llama3.2
-# 4. 모델 폴더를 USB로 복사
-cp -r ~/.ollama/models /Volumes/USB/.ollama_models
 
-# === 폐쇄망 Mac에서 수행 ===
-USB="/Volumes/USB"   # 실제 USB 경로로 변경
+# 4. goose 설치 (셋 중 하나 선택)
+curl -fsSL https://github.com/block/goose/releases/latest/download/download_cli.sh | sh  # 스크립트
+brew install block/tap/goose         # Homebrew
+# 또는 https://github.com/block/goose/releases 에서 aarch64 빌드 다운로드
 
-# 1. Ollama 설치
-unzip "$USB/Ollama-darwin.zip" -d /Applications/
-xattr -d com.apple.quarantine /Applications/Ollama.app
-open /Applications/Ollama.app
-
-# 2. 모델 파일 복사
-mkdir -p ~/.ollama
-cp -r "$USB/.ollama_models" ~/.ollama/models
-
-# 3. goose 설치
-unzip "$USB/goose-aarch64-apple-darwin.zip" -d ~/goose-install/
-sudo mv ~/goose-install/goose /usr/local/bin/
-sudo chmod +x /usr/local/bin/goose
-sudo xattr -d com.apple.quarantine /usr/local/bin/goose
-
-# 4. 환경 변수 설정
+# 5. 환경 변수 설정
 cat >> ~/.zshrc << 'EOF'
 export GOOSE_PROVIDER="ollama"
 export GOOSE_MODEL="qwen2.5-coder:7b"
 export OLLAMA_HOST="localhost:11434"
 export OLLAMA_TIMEOUT=600
-export GOOSE_DISABLE_KEYRING=1
 export GOOSE_TOOLSHIM=1
 export GOOSE_TOOLSHIM_OLLAMA_MODEL=llama3.2
 EOF
 source ~/.zshrc
 
-# 5. 확인
+# 6. 확인
 goose --version
 ollama list
 goose session
