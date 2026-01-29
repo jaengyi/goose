@@ -25,6 +25,7 @@ cargo test -p goose -- test_name  # single test
 # Lint & Format
 cargo fmt                     # format code (required before commits)
 ./scripts/clippy-lint.sh      # full lint suite (required before PRs)
+./scripts/clippy-lint.sh --fix  # auto-fix lint issues
 
 # UI Development
 just generate-openapi         # regenerate after server route changes
@@ -41,7 +42,9 @@ cd ui/desktop && npm run lint:check && npm run test:run  # UI checks
 - **goose-server**: REST API backend for desktop app, binary name `goosed` (entry: `src/main.rs`)
 - **goose-mcp**: Built-in MCP extensions (developer tools, computer controller, memory)
 - **goose-bench**: Benchmarking suite
-- **mcp-client/mcp-core/mcp-server**: MCP protocol implementation
+- **goose-test**: Test utilities
+
+MCP protocol implementation uses the external `rmcp` crate (workspace dependency).
 
 ### UI Layer
 - Location: `ui/desktop/`
